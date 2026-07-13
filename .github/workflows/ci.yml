@@ -1,0 +1,37 @@
+name: CI - Pipeline de Pagamentos
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Permite execução manual
+  schedule:
+    - cron: '0 8 * * *' # Executa diariamente às 8h UTC
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Setup do Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Dependências do Projeto
+        run: npm install
+
+      - name: Instalar Framework de Relatório (Mochawesome)
+        run: npm install mochawesome
+
+      - name: Executar Testes e Extrair Evidência
+        run: npx mocha test/**/*.test.js --reporter mochawesome --reporter-options reportDir=relatorio,reportFilename=resultado-testes
+
+      - name: Armazenar Relatório na Pipeline (Artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Evidencia-Relatorio-Testes
+          path: relatorio/
