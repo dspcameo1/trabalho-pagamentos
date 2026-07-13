@@ -1,0 +1,12 @@
+{
+  "name": "sistema-pagamentos",
+  "version": "1.0.0",
+  "description": "Implementação do Serviço de Pagamentos e testes automatizados",
+  "main": "src/ServicoDePagamento.js",
+  "scripts": {
+    "test": "mocha test/**/*.test.js"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0"
+  }
+}
